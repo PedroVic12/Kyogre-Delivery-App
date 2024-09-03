@@ -79,4 +79,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'ruby-delivery-app.appspot.com',
     measurementId: 'G-19XLE5DFNG',
   );
+
 }

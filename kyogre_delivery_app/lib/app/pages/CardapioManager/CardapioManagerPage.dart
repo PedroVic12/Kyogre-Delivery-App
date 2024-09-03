@@ -1,15 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kyogre_delivery_app/app/repository/cardapio_reposiotry.dart';
+import 'package:kyogre_delivery_app/controllers/Navigator/CapitaoNavigator.dart';
 import 'package:kyogre_delivery_app/controllers/cardapio/cardapio_diolog_cadatro.dart';
 import 'package:kyogre_delivery_app/controllers/cardapio_manager_controller.dart';
+import 'package:kyogre_delivery_app/database/storage_services.dart';
+import 'package:kyogre_delivery_app/widgets/CarrousselWidget.dart';
 import 'package:kyogre_delivery_app/widgets/CustomText.dart';
 
 class CardapioManagerPage extends StatelessWidget {
   final manager = CardapioManager();
   final repository = CardapioRepository();
 
-  CardapioManagerPage({super.key}) {}
+  final navigator = NavigationManager();
+
+  CardapioManagerPage({super.key});
 
   // separar o collection e categoria
   // cada produto com adicional ser tratado diferente
@@ -18,55 +23,53 @@ class CardapioManagerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('CARDAPIO DIGITAL DE {RUBY}'),
+        title: const Text('CARDAPIO DIGITAL DE {RUBY} 2'),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            TextButton(onPressed: () {}, child: const Text("Procurar Produto")),
-            TextButton(
-                onPressed: () {
-                  //Get.to(PhotoGalleryScreen());
-                },
-                child: const CustomText(
-                  text: "Galeria produtos",
-                  color: Colors.white,
-                )),
-            Container(
-              height: 500, // Defina a altura da lista horizontal
-              padding: const EdgeInsets.all(12),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal, // Lista na direção horizontal
-                itemCount: repository.categoriasCardapio.length,
-                itemBuilder: (context, index) {
-                  var produtoCardapio = repository.arrayProdutos[index];
-                  var categoriasCardapio = repository.categoriasCardapio[index];
-                  return Container(
-                    width: 250, // Largura de cada contêiner
-                    margin: const EdgeInsets.all(
-                        12), // Espaçamento ao redor de cada contêiner
-                    decoration: BoxDecoration(
-                      color: index.isEven
-                          ? Colors.blue
-                          : Colors
-                              .green, // Cores alternadas para os contêineres
-                      borderRadius:
-                          BorderRadius.circular(10), // Borda arredondada
-                    ),
-                    child: Column(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        botoesSuperior(context, categoriasCardapio),
-                        cardProduct(produtoCardapio),
-                      ],
-                    ),
-                  );
-                },
-              ),
+      body: ListView(
+        children: [
+          TextButton(onPressed: () {}, child: const Text("Procurar Produto")),
+          TextButton(
+              onPressed: () {
+                NavigationManager.navigateToPage(context,
+                    ImagensFirebaseCardapio()); // Navegar para a página inicial
+              },
+              child: const CustomText(
+                text: "Galeria produtos",
+                color: Colors.red,
+              )),
+          Container(
+            height: 500, // Defina a altura da lista horizontal
+            padding: const EdgeInsets.all(12),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal, // Lista na direção horizontal
+              itemCount: repository.categoriasCardapio.length,
+              itemBuilder: (context, index) {
+                var produtoCardapio = repository.arrayProdutos[index];
+                var categoriasCardapio = repository.categoriasCardapio[index];
+                return Container(
+                  width: 250, // Largura de cada contêiner
+                  margin: const EdgeInsets.all(
+                      12), // Espaçamento ao redor de cada contêiner
+                  decoration: BoxDecoration(
+                    color: index.isEven
+                        ? Colors.blue
+                        : Colors.green, // Cores alternadas para os contêineres
+                    borderRadius:
+                        BorderRadius.circular(10), // Borda arredondada
+                  ),
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      botoesSuperior(context, categoriasCardapio),
+                      cardProduct(produtoCardapio),
+                    ],
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+          //showImagensCardapio()
+        ],
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -198,6 +201,59 @@ class CardapioManagerPage extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class ImagensFirebaseCardapio extends StatefulWidget {
+  const ImagensFirebaseCardapio({super.key});
+
+  @override
+  State<ImagensFirebaseCardapio> createState() =>
+      _ImagensFirebaseCardapioState();
+}
+
+class _ImagensFirebaseCardapioState extends State<ImagensFirebaseCardapio> {
+  final controller = FirebaseServices();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.fetchImagens();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Galeria de Produtos'),
+      ),
+      body: ListView.builder(
+        itemCount: controller.imagensUrls.length,
+        itemBuilder: (context, index) {
+          final String urlImg = controller.imagensUrls[index];
+
+          return Image.network(urlImg);
+          // return ListTile(
+          //   title: Text(controller.imagensUrls[index]),
+          //   trailing: IconButton(
+          //     icon: const Icon(Icons.delete),
+          //     onPressed: () {
+          //       controller.deleteImagem(controller.imagensUrls[index]);
+          //       setState(() {});
+          //     },
+          //   ),
+          // );
+        },
+      ),
+
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            controller.uploadImage();
+          },
+          tooltip: 'Upload Imagem',
+          child: const Text('Upload Imagem')), //
     );
   }
 }

@@ -31,7 +31,7 @@ class _GaleriaFotosCardapioState extends State<GaleriaFotosCardapio> {
       appBar: AppBar(
         title: const Text('Galeria de Fotos do Cardápio'),
       ),
-      body: const Placeholder(),
+      body: Text('Ola mundo    111111111111111111111'),
     );
   }
 }

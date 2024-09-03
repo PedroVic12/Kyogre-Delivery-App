@@ -50,7 +50,7 @@ class FirebaseServices {
   }
 
   // Fazer upload de imagem para o Firebase Storage
-  Future<String> uploadImage(Uint8List imageBytes, String fileName) async {
+  Future<String> uploadImage() async {
     try {
       isUploading = true;
 
@@ -68,13 +68,9 @@ class FirebaseServices {
       String downloadUrl = await _storage.ref(filePath).getDownloadURL();
       imagensUrls.add(downloadUrl);
       isUploading = false;
-
-      final storageRef = _storage.ref().child('produto_imagens/$fileName');
-      await storageRef.putData(imageBytes);
-      return await storageRef.getDownloadURL();
     } on Exception catch (e) {
       // TODO
-      print("Error ao fazer upload da imagem: $e");
+      print("\n\nError ao fazer upload da imagem: $e");
     }
 
     // Add a return statement at the end
