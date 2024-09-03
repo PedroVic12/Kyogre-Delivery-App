@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "394719793662",
+    "project_id": "ruby-delivery-app",
+    "storage_bucket": "ruby-delivery-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394719793662:android:3bad6a049cb25a673ff0af",
+        "android_client_info": {
+          "package_name": "com.rubydelivery.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGLVUC3TPVF6lWbJlnNIHsows_cc9nwQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

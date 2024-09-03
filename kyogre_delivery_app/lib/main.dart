@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kyogre_delivery_app/app/pages/DashBoard/DashboardTemplate.dart';
+import 'package:kyogre_delivery_app/firebase_options.dart';
 import 'package:macos_ui/macos_ui.dart';
 
-void main() {
+void main() async {
   //flutter run –dart-define-from-files=.env
 
   //   //Gemini.init(apiKey: const String.fromEnvironment('chave_key'));
@@ -14,6 +16,11 @@ void main() {
   //     print('\n\nModelos Disponiveis: $models');
   //   });
   // }
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
