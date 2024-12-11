@@ -17,10 +17,10 @@ class NavigationManager {
     Navigator.of(context).pop();
   }
 
-  static textNavigate(BuildContext context, Widget Widget, String text) {
+  static Widget textNavigate(BuildContext context, Widget widget, String text) {
     return TextButton(
         onPressed: () {
-          navigateToPage(context, Widget);
+          navigateToPage(context, widget);
         },
         child: Text(text));
   }

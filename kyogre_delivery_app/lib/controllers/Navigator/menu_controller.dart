@@ -18,7 +18,10 @@ class MenuControler {
 
   isActive(String itemName) => activeItem == itemName;
 
-  isPassandoNaTela(String itemName) => hoverItem = itemName;
+  isPassandoNaTela(String itemName) {
+    hoverItem = itemName;
+    return hoverItem == itemName;
+  }
 
   // Widget returnIconFor(String itemName) {
   //   switch (itemName) {
